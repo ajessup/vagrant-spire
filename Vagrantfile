@@ -3,7 +3,6 @@ Vagrant.configure("2") do |config|
     server.vm.box = "ubuntu/trusty64"
     server.vm.hostname = "server"
     server.vm.network "private_network", ip: "192.168.99.10"
-    server.vm.network "forwarded_port", guest:8080, host: 8080
     server.vm.provision "file", source: "git-config", destination: "$HOME/.gitconfig"
     server.vm.provision "file", source: "github-private-key", destination: "$HOME/.ssh/gitHubKey"
     server.vm.provision :ansible do |ansible|
