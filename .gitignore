@@ -1,0 +1,4 @@
+github-private-key
+*.tar.gz
+*.retry
+.vagrant*

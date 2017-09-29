@@ -1,0 +1,59 @@
+- hosts: all
+  become: true
+  vars:
+      home: /home/vagrant
+      document_root: /vagrant
+      os: ubuntu
+      user: vagrant
+      osversioncode: xenial
+  gather_facts: no
+  pre_tasks:
+    - name: Update apt cache and optionally upgrade
+      apt:
+        update_cache=yes
+        cache_valid_time=7200
+    - name: Install stuff from Aptitude
+      apt: name={{ item }} state=installed
+      with_items:
+        - git
+        - vim
+        - bash-completion
+        - make
+        - tree
+        - htop
+        - man-db
+    - name: Ensure sshd can connect to new hosts in non-interactive mode
+      lineinfile:
+        path: /etc/ssh/ssh_config
+        regexp: '^StrictHostKeyChecking'
+        line: 'StrictHostKeyChecking no'
+    - name: Add PK to access github
+      lineinfile:
+        path: /etc/ssh/ssh_config
+        line: 'IdentityFile ~/.ssh/gitHubKey' 
+  roles:
+    - { role: golang, become: true }
+  tasks:
+    - name: Build SPIRE
+      command: >
+        go get -u github.com/spiffe/spire/...
+      become: yes
+      become_user: "{{ user }}"
+      environment:
+        GOPATH: "{{ go_path }}"
+        GOROOT: "{{ go_root }}"
+        PATH: "{{ go_root }}/bin:{{ go_path }}/bin:/usr/bin:/bin"
+
+    - name: Build the node attestor plugins
+      command: go build -i
+      args:
+        chdir: "{{ go_path }}/src/{{ item }}"
+      environment:
+          GOPATH: "{{ go_path }}"
+          GOROOT: "{{ go_root }}"
+          PATH: "{{ go_root }}/bin:{{ go_path }}/bin:/usr/bin:/bin"
+      with_items:
+         - 'github.com/spiffe/spire/plugin/server/nodeattestor-jointoken'
+         - 'github.com/spiffe/spire/plugin/agent/nodeattestor-jointoken'
+      become: yes
+      become_user: "{{ user }}"
