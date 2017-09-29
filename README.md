@@ -15,14 +15,16 @@ Create an SSH keypair and [register the public key](https://help.github.com/arti
 # Usage
 Where `$` is the host machine prompt, and `>` is the guest VM prompt.
 
+Provision everything and start the server:
 ```
  $ vagrant up
  $ vagrant ssh server
  > cd /vagrant/server.conf/
  > spire-server run
-````
+```
 
-````
+Provision everything and start the node running the agent:
+```
  $ vagrant ssh node
  > cd /vagrant/node.conf/
  > spire-agent run --socketPath=/home/vagrant/sock1 &
