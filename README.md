@@ -23,7 +23,7 @@ Provision everything and start the server:
  > spire-server run
 ```
 
-Provision everything and start the node running the agent:
+Start the node running the agent:
 ```
  $ vagrant ssh node
  > cd /vagrant/node.conf/
