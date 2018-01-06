@@ -1,0 +1,15 @@
+{
+    "entries": [
+        {
+            "selectors": [
+                {
+                    "type": "unix",
+                    "value": "uid:1111"
+                }
+            ],
+            "spiffe_id": "spiffe://example.org/marketing/blog",
+            "parent_id": "spiffe://example.org/spire/agent/join_token/331f53cc-bab6-4f84-aa0a-211be71d2e96",
+            "ttl": 200
+        }
+    ]
+}

@@ -5,6 +5,5 @@ pluginChecksum = ""
 enabled = true
 pluginType = "NodeAttestor" //needs to match the handshake
 pluginData {
-	join_token = "NOT-A-SECRET"
 	trust_domain = "example.org"
 }

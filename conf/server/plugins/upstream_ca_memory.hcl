@@ -1,6 +1,6 @@
 pluginName = "upstream_ca" //needs to match the name used in plugin serverConfig
 
-pluginCmd = "/home/vagrant/code/go/bin/upstreamca-memory"
+pluginCmd = "/home/vagrant/code/go/src/github.com/spiffe/spire/plugin/server/upstreamca-memory/upstreamca-memory"
 pluginChecksum = ""
 enabled = true
 pluginType = "UpstreamCA"

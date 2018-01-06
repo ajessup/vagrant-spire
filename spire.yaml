@@ -34,26 +34,34 @@
   roles:
     - { role: golang, become: true }
   tasks:
+    - file:
+       state: directory
+       recurse: yes
+       path: "{{ go_path }}/src/github.com/spiffe"
+       owner: "{{ user }}"
+       group: "{{ user }}"     
+    - file:
+        src: /mnt/spire
+        dest: "{{ go_path }}/src/github.com/spiffe/spire"
+        owner: "{{ user }}"
+        group: "{{ user }}"
+        state: link
     - name: Build SPIRE
-      command: >
-        go get -u github.com/spiffe/spire/...
-      become: yes
-      become_user: "{{ user }}"
+      make:
+        chdir: "{{ go_path }}/src/github.com/spiffe/spire"
       environment:
         GOPATH: "{{ go_path }}"
         GOROOT: "{{ go_root }}"
-        PATH: "{{ go_root }}/bin:{{ go_path }}/bin:/usr/bin:/bin"
-
-    - name: Build the node attestor plugins
-      command: go build -i
-      args:
-        chdir: "{{ go_path }}/src/{{ item }}"
-      environment:
-          GOPATH: "{{ go_path }}"
-          GOROOT: "{{ go_root }}"
-          PATH: "{{ go_root }}/bin:{{ go_path }}/bin:/usr/bin:/bin"
+        PATH: "{{ go_root }}/bin:/usr/bin:/bin"
+      become: yes
+      become_user: "{{ user }}"
+    - name: Add to path
+      file:
+        state: link
+        src: "{{ go_path }}/src/github.com/spiffe/spire/cmd/spire-server/{{ item }}"
+        dest: "/usr/local/bin/{{ item }}"
       with_items:
-         - 'github.com/spiffe/spire/plugin/server/nodeattestor-jointoken'
-         - 'github.com/spiffe/spire/plugin/agent/nodeattestor-jointoken'
+        - 'spire-server'
+        - 'spire-agent'
       become: yes
       become_user: "{{ user }}"

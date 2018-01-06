@@ -6,12 +6,6 @@ This Vagrantfile defines two nodes, `server` that runs the SPIRE server and `nod
 
 You'll need [Vagrant](https://www.vagrantup.com/) (with the VirtualBox provider) and [Ansible](https://www.ansible.com/) installed on your host machine.
 
-Since the SPIRE repository is currently private, you'll need a github account with access to https://github.com/spiffe/spire.
-
-# Setup
-
-Create an SSH keypair and [register the public key](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/) with your github account. Copy the private key to the same directory as this file, and rename it to `github-private-key`. *Note:* This private key will be copied to the host VMs, so make sure it isn't being used for anything important.
-
 # Usage
 Where `$` is the host machine prompt, and `>` is the guest VM prompt.
 
